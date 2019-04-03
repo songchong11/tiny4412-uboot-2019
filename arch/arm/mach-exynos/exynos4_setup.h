@@ -5,8 +5,11 @@
  * Copyright (C) 2011 Samsung Electronics
  */
 
-#ifndef _ORIGEN_SETUP_H
-#define _ORIGEN_SETUP_H
+//#ifndef _ORIGEN_SETUP_H
+//#define _ORIGEN_SETUP_H
+
+#ifndef _TINY4412_SETUP_H
+#define _TINY4412_SETUP_H
 
 #include <config.h>
 #include <asm/arch/cpu.h>
@@ -433,7 +436,7 @@ struct mem_timings {
 #define ABP_SFR_SLV1_SINGLE_ADDRMAP_START_OFFSET	0x828
 #define ABP_SFR_SLV1_SINGLE_ADDRMAP_END_OFFSET	0x830
 
-#ifdef CONFIG_ORIGEN
+#if (defined CONFIG_ORIGEN) || (defined CONFIG_TINY4412)
 /* Interleave: 2Bit, Interleave_bit1: 0x15, Interleave_bit0: 0x7 */
 #define APB_SFR_INTERLEAVE_CONF_VAL	0x20001507
 #define APB_SFR_ARBRITATION_CONF_VAL	0x00000001
@@ -555,7 +558,7 @@ struct mem_timings {
 
 #define CONTROL2_VAL		0x00000000
 
-#ifdef CONFIG_ORIGEN
+#if (defined CONFIG_ORIGEN) || (defined CONFIG_TINY4412)
 #define TIMINGREF_VAL		0x000000BB
 #define TIMINGROW_VAL		0x4046654f
 #define	TIMINGDATA_VAL		0x46400506

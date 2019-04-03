@@ -8,6 +8,7 @@ dtb-$(CONFIG_TARGET_GURNARD) += at91sam9g45-gurnard.dtb
 dtb-$(CONFIG_S5PC100) += s5pc1xx-smdkc100.dtb
 dtb-$(CONFIG_S5PC110) += s5pc1xx-goni.dtb
 dtb-$(CONFIG_EXYNOS4) += exynos4210-origen.dtb \
+	exynson4210-tiny4412.dtb \
 	exynos4210-smdkv310.dtb \
 	exynos4210-universal_c210.dtb \
 	exynos4210-trats.dtb \

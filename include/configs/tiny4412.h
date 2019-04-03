@@ -5,14 +5,25 @@
  * Configuration settings for the SAMSUNG ORIGEN (EXYNOS4210) board.
  */
 
-#ifndef __CONFIG_ORIGEN_H
-#define __CONFIG_ORIGEN_H
+//#ifndef __CONFIG_ORIGEN_H
+//#define __CONFIG_ORIGEN_H
+#ifndef __CONFIG_TINY4412_H
+#define __CONFIG_TINY4412_H
 
 #include <configs/exynos4-common.h>
 
 /* High Level Configuration Options */
 #define CONFIG_EXYNOS4210		1	/* which is a EXYNOS4210 SoC */
 #define CONFIG_ORIGEN			1	/* working with ORIGEN*/
+#define CONFIG_TINY4412
+
+/*设置串口*/
+#define CONFIG_SPL_SERIAL_SUPPORT
+#define CONFIG_SPL_GPIO_SUPPORT
+#define CONFIG_DEBUG_UART
+#define CONFIG_DEBUG_UART_S5P
+#define CONFIG_DEBUG_UART_BASE 0x13800000
+#define CONFIG_DEBUG_UART_CLOCK (100000000)
 
 #define CONFIG_SYS_DCACHE_OFF		1
 
@@ -26,7 +37,7 @@
 #define CONFIG_SYS_MEMTEST_END		(CONFIG_SYS_SDRAM_BASE + 0x6000000)
 #define CONFIG_SYS_LOAD_ADDR		(CONFIG_SYS_SDRAM_BASE + 0x3E00000)
 
-#define CONFIG_MACH_TYPE		MACH_TYPE_ORIGEN
+#define CONFIG_MACH_TYPE		MACH_TYPE_TINY4412
 
 /* select serial console configuration */
 
@@ -96,5 +107,9 @@
 #define COPY_BL2_SIZE		0x80000
 #define BL2_START_OFFSET	((CONFIG_ENV_OFFSET + CONFIG_ENV_SIZE)/512)
 #define BL2_SIZE_BLOC_COUNT	(COPY_BL2_SIZE/512)
+
+#define COPY_UBOOT_SIZE		0x80000
+#define UBOOT_START_OFFSET	((CONFIG_ENV_OFFSET + CONFIG_ENV_SIZE)/512)
+#define UBOOT_SIZE_BLOC_COUNT	(COPY_UBOOT_SIZE/512)
 
 #endif	/* __CONFIG_H */
