@@ -244,7 +244,7 @@ ifeq ($(HOSTARCH),$(ARCH))
 ARCH ?= arm
 CROSS_COMPILE ?= arm-none-eabi-
 endif
-
+# this is my test in actions srv 15
 KCONFIG_CONFIG	?= .config
 export KCONFIG_CONFIG
 
