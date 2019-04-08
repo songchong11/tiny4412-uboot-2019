@@ -17,6 +17,8 @@
 
 #include "common_setup.h"
 #include "clock_init.h"
+#include "debug_uart.h"
+#include <configs/tiny4412.h> 
 
 DECLARE_GLOBAL_DATA_PTR;
 

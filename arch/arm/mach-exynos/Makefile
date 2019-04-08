@@ -18,3 +18,4 @@ obj-y	+= dmc_init_exynos4.o clock_init_exynos4.o
 obj-y	+= spl_boot.o tzpc.o
 obj-y	+= lowlevel_init.o
 endif
+endif

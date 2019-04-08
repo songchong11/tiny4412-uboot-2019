@@ -9,7 +9,7 @@
 #ifndef __CONFIG_TINY4412_H
 #define __CONFIG_TINY4412_H
 
-#include <;configs/exynos4-common.h>
+#include <configs/exynos4-common.h>
 
 /* High Level Configuration Options */
 #define CONFIG_TINY4412            1
