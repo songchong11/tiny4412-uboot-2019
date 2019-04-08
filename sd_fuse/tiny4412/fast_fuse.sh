@@ -29,39 +29,45 @@ BDEV_NAME=`basename $1`
 BDEV_SIZE=`cat /sys/block/${BDEV_NAME}/size`
 
 if [ ${BDEV_SIZE} -le 0 ]; then
-	echo "Error: NO media found in card reader."
-	exit 1
+    echo "Error: NO media found in card reader."
+    exit 1
 fi
 
 if [ ${BDEV_SIZE} -gt 32000000 ]; then
-	echo "Error: Block device size (${BDEV_SIZE}) is too large"
-	exit 1
+    echo "Error: Block device size (${BDEV_SIZE}) is too large"
+    exit 1
 fi
 
 ####################################
 # check files
 
-E4412_UBOOT=../../u-boot.bin
+E4412_SPL=../../spl/u-boot-spl.bin
+E4412_UBOOT=../../u-boot-dtb.bin
 MKBL2=../mkbl2
 
+if [ ! -f ${E4412_SPL} ]; then
+    echo "Error: u-boot-spl.bin NOT found, please build it & try again."
+    exit -1
+fi
+
 if [ ! -f ${E4412_UBOOT} ]; then
-	echo "Error: u-boot.bin NOT found, please build it & try again."
-	exit -1
+    echo "Error: u-boot-dtb.bin NOT found, please build it & try again."
+    exit -1
 fi
 
 if [ ! -f ${MKBL2} ]; then
-	echo "Error: can not find host tool - mkbl2, stop."
-	exit -1
+    echo "Error: can not find host tool - mkbl2, stop."
+    exit -1
 fi
 
 #<make bl2>
-${MKBL2} ${E4412_UBOOT} bl2.bin 14336
+${MKBL2} ${E4412_SPL} bl2.bin 14336
 
 ####################################
 # fusing images
 
 bl2_position=17
-uboot_position=49
+uboot_position=81
 
 #<BL2 fusing>
 echo "---------------------------------------"
@@ -81,4 +87,3 @@ sync
 echo "---------------------------------------"
 echo "U-boot image is fused (at `date +%T`) successfully."
 echo "Eject SD card and insert it again."
-
