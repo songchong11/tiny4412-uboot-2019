@@ -16,6 +16,6 @@ always := $(hostprogs-y)
 # Fix the root cause in tools/mkorigenspl.c and delete the following work-around
 $(obj)/tools/mktiny4412spl: HOSTCFLAGS:=$(filter-out -O2,$(HOSTCFLAGS))
 else
-obj-y	+= origen.o
+#obj-y	+= origen.o
 obj-y	+= tiny4412.o
 endif

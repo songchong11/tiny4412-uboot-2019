@@ -28,6 +28,28 @@
 #include "common_setup.h"
 #include "exynos4_setup.h"
 
+#ifdef CONMFIG_TINY4412
+struct mem_timings mem = {
+    .direct_cmd_msr = {
+        DIRECT_CMD1, DIRECT_CMD2, DIRECT_CMD3, DIRECT_CMD4
+    },
+    .timingref = 0x000000BB,
+    .timingrow = 0x4046654f,
+    .timingdata = 0x46400506,
+    .timingpower = 0x52000A3C,
+    .zqcontrol = 0xE3854C03,
+    .control0 = 0x71101008,
+    .control1 = 0xe0000086,
+    .control2 = 0x00000000,
+    .concontrol = 0x0FFF301A,
+    .prechconfig = 0xff000000,
+    .memcontrol = 0x00312640,
+    .memconfig0 = 0x40e01323,
+    .memconfig1 = 0x60e01323,
+    .dll_resync = FORCE_DLL_RESYNC,
+    .dll_on = DLL_CONTROL_ON,
+};
+#else
 struct mem_timings mem = {
 	.direct_cmd_msr = {
 		DIRECT_CMD1, DIRECT_CMD2, DIRECT_CMD3, DIRECT_CMD4
@@ -48,6 +70,7 @@ struct mem_timings mem = {
 	.dll_resync = FORCE_DLL_RESYNC,
 	.dll_on = DLL_CONTROL_ON,
 };
+#endif
 static void phy_control_reset(int ctrl_no, struct exynos4_dmc *dmc)
 {
 	if (ctrl_no) {
