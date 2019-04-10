@@ -61,8 +61,9 @@ if [ ! -f ${MKBL2} ]; then
 fi
 
 #<make bl2>
+echo "make bl2 "
 ${MKBL2} ${E4412_SPL} bl2.bin 14336
-
+echo "make bl2 end"
 ####################################
 # fusing images
 
@@ -80,6 +81,7 @@ dd iflag=dsync oflag=dsync if=./E4412_N.bl1.bin of=$1 seek=$signed_bl1_position
 echo "---------------------------------------"
 echo "BL2 fusing"
 dd iflag=dsync oflag=dsync if=./bl2.bin of=$1 seek=$bl2_position
+#dd iflag=dsync oflag=dsync if=./tiny4412-spl.bin of=$1 seek=$bl2_position
 
 #<u-boot fusing>
 echo "---------------------------------------"

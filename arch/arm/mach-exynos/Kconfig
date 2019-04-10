@@ -61,7 +61,7 @@ config TARGET_ORIGEN
 	select SUPPORT_SPL
 	
 config TARGET_TINY4412
-	bool "Exynos4412 tiny4412 board"
+	bool "Exynos4412 Tiny4412 board"
 	select SUPPORT_SPL
 
 config TARGET_TRATS2

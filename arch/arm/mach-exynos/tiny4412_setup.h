@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Samsung Electronics
- * Przemyslaw Marczak <;p.marczak@samsung.com>
+ * Przemyslaw Marczak <p.marczak@samsung.com>
  *
  * SPDX-License-Identifier:    GPL-2.0+
  */
@@ -13,7 +13,7 @@
 #define PDIV(x)                 (((x) & 0x3f) << 8)
 #define MDIV(x)                 (((x) & 0x3ff) << 16)
 #define FSEL(x)                 (((x) & 0x1) << 27)
-#define PLL_LOCKED_BIT          (0x1 <;< 29)
+#define PLL_LOCKED_BIT          (0x1 << 29)
 #define PLL_ENABLE(x)           (((x) & 0x1) << 31)
 
 /* CLK_SRC_CPU */

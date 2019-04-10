@@ -259,7 +259,7 @@ void system_clock_init(void)
      * DOUTmmc0 = MOUTmmc0 / (ratio + 1) = 100 (7)
      * sclk_mmc0 = DOUTmmc0 / (ratio + 1) = 50 (1)
     */
-    set = MMC0_RATIO(7) | MMC0_PRE_RATIO(1) | MMC1_RATIO(7) |
+    set = MMC0_RATIO(7) | MMC0_PRE_RATIO(4) | MMC1_RATIO(7) |
           MMC1_PRE_RATIO(1);
 
     clrsetbits_le32(&clk->div_fsys1, clr, set);

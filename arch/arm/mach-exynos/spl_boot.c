@@ -187,6 +187,7 @@ void copy_uboot_to_ram(void)
 	unsigned int bootmode = BOOT_MODE_OM;
 
 	u32 (*copy_uboot)(u32 offset, u32 nblock, u32 dst) = NULL;
+	u32 (*copy_bl2)(u32 offset, u32 nblock, u32 dst) = NULL;
 	u32 offset = 0, size = 0;
 #ifdef CONFIG_SPI_BOOTING
 	struct spl_machine_param *param = spl_get_machine_params();
@@ -225,7 +226,8 @@ void copy_uboot_to_ram(void)
 	case BOOT_MODE_SD:
 		offset = UBOOT_START_OFFSET;
 		size = UBOOT_SIZE_BLOC_COUNT;
-		copy_uboot = get_irom_func(MMC_INDEX);
+	//	copy_uboot = get_irom_func(MMC_INDEX);
+		copy_bl2 = get_irom_func(MMC_INDEX);
 		break;
 #ifdef CONFIG_SUPPORT_EMMC_BOOT
 	case BOOT_MODE_EMMC:
@@ -255,8 +257,8 @@ void copy_uboot_to_ram(void)
 		break;
 	}
 
-#if CONFIG_TINY4412
-    if (copy_uboot)
+#ifdef CONFIG_TINY4412
+    if (copy_bl2)
     {
         /*
          * Here I use iram 0x020250000-0x020260000 (64k)
@@ -272,16 +274,17 @@ void copy_uboot_to_ram(void)
 
         for (count = 0; count < UBOOT_SIZE_BLOC_COUNT; count+=step) {
             /* copy u-boot from sdcard to iram firstly.  */
-            copy_uboot((u32)(UBOOT_START_OFFSET+count), (u32)step, (u32)buffer);
+            copy_bl2((u32)(UBOOT_START_OFFSET+count), (u32)step, (u32)buffer);
             /* then copy u-boot from iram to dram. */
             for (i=0; i<0x10000; i++) {
                 *dst++ = buffer[i];
             }
         }
+	printascii("copy uboot to ram done!");
     }
 #else
-	if (copy_bl2)
-		copy_bl2(offset, size, CONFIG_SYS_TEXT_BASE);
+	if (copy_uboot)
+		copy_uboot(offset, size, CONFIG_SYS_TEXT_BASE);
 #endif
 }
 
@@ -319,9 +322,9 @@ void board_init_f(unsigned long bootflag)
 
 	if (do_lowlevel_init())
 		power_exit_wakeup();
-
+	printascii("lowlevel init ok.\n\r");
 	copy_uboot_to_ram();
-
+	printascii("copy_uboot_to_ram and jump to uboot.\n\r");
 	/* Jump to U-Boot image */
 	uboot = (void *)CONFIG_SYS_TEXT_BASE;
 	(*uboot)();
