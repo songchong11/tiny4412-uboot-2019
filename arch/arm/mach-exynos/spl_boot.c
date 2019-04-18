@@ -186,7 +186,6 @@ void copy_uboot_to_ram(void)
 {
 	unsigned int bootmode = BOOT_MODE_OM;
 
-	u32 (*copy_uboot)(u32 offset, u32 nblock, u32 dst) = NULL;
 	u32 (*copy_bl2)(u32 offset, u32 nblock, u32 dst) = NULL;
 	u32 offset = 0, size = 0;
 #ifdef CONFIG_SPI_BOOTING
@@ -224,9 +223,8 @@ void copy_uboot_to_ram(void)
 		break;
 #endif
 	case BOOT_MODE_SD:
-		offset = UBOOT_START_OFFSET;
-		size = UBOOT_SIZE_BLOC_COUNT;
-	//	copy_uboot = get_irom_func(MMC_INDEX);
+		offset = BL2_START_OFFSET;
+		size = BL2_SIZE_BLOC_COUNT;
 		copy_bl2 = get_irom_func(MMC_INDEX);
 		break;
 #ifdef CONFIG_SUPPORT_EMMC_BOOT
@@ -257,35 +255,8 @@ void copy_uboot_to_ram(void)
 		break;
 	}
 
-#ifdef CONFIG_TINY4412
-    if (copy_bl2)
-    {
-        /*
-         * Here I use iram 0x020250000-0x020260000 (64k)
-         * as an buffer, and copy u-boot from sd card to 
-         * this buffer, then copy it to dram started 
-         * from 0x43e00000.
-         *
-         */
-        unsigned int i, count = 0;
-        unsigned char *buffer = (unsigned char *)0x02050000;
-        unsigned char *dst = (unsigned char *)CONFIG_SYS_TEXT_BASE;
-        unsigned int step = (0x10000 / 512);
-
-        for (count = 0; count < UBOOT_SIZE_BLOC_COUNT; count+=step) {
-            /* copy u-boot from sdcard to iram firstly.  */
-            copy_bl2((u32)(UBOOT_START_OFFSET+count), (u32)step, (u32)buffer);
-            /* then copy u-boot from iram to dram. */
-            for (i=0; i<0x10000; i++) {
-                *dst++ = buffer[i];
-            }
-        }
-	printascii("copy uboot to ram done!");
-    }
-#else
-	if (copy_uboot)
-		copy_uboot(offset, size, CONFIG_SYS_TEXT_BASE);
-#endif
+	if (copy_bl2)
+		copy_bl2(offset, size, CONFIG_SYS_TEXT_BASE);
 }
 
 void memzero(void *s, size_t n)
@@ -315,6 +286,7 @@ static void setup_global_data(gd_t *gdp)
 
 void board_init_f(unsigned long bootflag)
 {
+	unsigned long i;
 	__aligned(8) gd_t local_gd;
 	__attribute__((noreturn)) void (*uboot)(void);
 
@@ -324,6 +296,16 @@ void board_init_f(unsigned long bootflag)
 		power_exit_wakeup();
 	printascii("lowlevel init ok.\n\r");
 	copy_uboot_to_ram();
+	printascii("copy uboot to ram end.\n\r");
+        for (i = 1; i < 45; i++){
+                printhex8(readl(CONFIG_SYS_TEXT_BASE + (4 * (i - 1))));
+                printascii(" ");
+                if (i % 4 == 0){
+                        printascii("\n\r");
+                }
+        }
+        printascii("print end \n\r");
+
 	printascii("copy_uboot_to_ram and jump to uboot.\n\r");
 	/* Jump to U-Boot image */
 	uboot = (void *)CONFIG_SYS_TEXT_BASE;

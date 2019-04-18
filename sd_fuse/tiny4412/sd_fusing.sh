@@ -29,13 +29,13 @@ BDEV_NAME=`basename $1`
 BDEV_SIZE=`cat /sys/block/${BDEV_NAME}/size`
 
 if [ ${BDEV_SIZE} -le 0 ]; then
-    echo "Error: NO media found in card reader."
-    exit 1
+	echo "Error: NO media found in card reader."
+	exit 1
 fi
 
 if [ ${BDEV_SIZE} -gt 32000000 ]; then
-    echo "Error: Block device size (${BDEV_SIZE}) is too large"
-    exit 1
+	echo "Error: Block device size (${BDEV_SIZE}) is too large"
+	exit 1
 fi
 
 ####################################
@@ -45,32 +45,25 @@ E4412_SPL=../../spl/u-boot-spl.bin
 E4412_UBOOT=../../u-boot-dtb.bin
 MKBL2=../mkbl2
 
-if [ ! -f ${E4412_SPL} ]; then
-    echo "Error: u-boot-spl.bin NOT found, please build it & try again."
-    exit -1
-fi
-
 if [ ! -f ${E4412_UBOOT} ]; then
-    echo "Error: u-boot.bin NOT found, please build it & try again."
-    exit -1
+	echo "Error: u-boot.bin NOT found, please build it & try again."
+	exit -1
 fi
 
 if [ ! -f ${MKBL2} ]; then
-    echo "Error: can not find host tool - mkbl2, stop."
-    exit -1
+	echo "Error: can not find host tool - mkbl2, stop."
+	exit -1
 fi
 
 #<make bl2>
-echo "make bl2 "
 ${MKBL2} ${E4412_SPL} bl2.bin 14336
-echo "make bl2 end"
+
 ####################################
 # fusing images
 
 signed_bl1_position=1
 bl2_position=17
 uboot_position=81
-tzsw_position=1105
 
 #<BL1 fusing>
 echo "---------------------------------------"
@@ -81,17 +74,11 @@ dd iflag=dsync oflag=dsync if=./E4412_N.bl1.bin of=$1 seek=$signed_bl1_position
 echo "---------------------------------------"
 echo "BL2 fusing"
 dd iflag=dsync oflag=dsync if=./bl2.bin of=$1 seek=$bl2_position
-#dd iflag=dsync oflag=dsync if=./tiny4412-spl.bin of=$1 seek=$bl2_position
 
 #<u-boot fusing>
 echo "---------------------------------------"
 echo "u-boot fusing"
 dd iflag=dsync oflag=dsync if=${E4412_UBOOT} of=$1 seek=$uboot_position
-
-#<TrustZone S/W fusing>
-echo "---------------------------------------"
-echo "TrustZone S/W fusing"
-dd iflag=dsync oflag=dsync if=./E4412_tzsw.bin of=$1 seek=$tzsw_position
 
 #<flush to disk>
 sync

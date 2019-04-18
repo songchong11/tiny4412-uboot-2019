@@ -13,13 +13,13 @@
 
 int main (int argc, char *argv[])
 {
-	FILE        	*fp;
-	unsigned char   src;
-	char      	*Buf, *a;
-	int        	BufLen;
-	int        	nbytes, fileLen;
-	unsigned int    checksum = 0;
-	int        	i;
+	FILE		*fp;
+	unsigned char	src;
+	char		*Buf, *a;
+	int		BufLen;
+	int		nbytes, fileLen;
+	unsigned int	checksum = 0;
+	int		i;
 
 	if (argc != 4)
 	{
@@ -42,7 +42,7 @@ int main (int argc, char *argv[])
 	fseek(fp, 0L, SEEK_END);
 	fileLen = ftell(fp);
 	fseek(fp, 0L, SEEK_SET);
-	#if 0
+/*
 	if ( BufLen > fileLen )
 	{
 		printf("Usage: unsupported size\n");
@@ -50,17 +50,21 @@ int main (int argc, char *argv[])
 		fclose(fp);
 		return -1;
 	}
-	#endif
-	nbytes = fread(Buf, 1, fileLen, fp);
-
-	if ( nbytes != fileLen )
+*/
+	//nbytes = fread(Buf, 1, BufLen, fp);
+	if(BufLen > fileLen)
+		nbytes = fread(Buf, 1, fileLen, fp);
+	else
+		nbytes = fread(Buf, 1, BufLen, fp);
+/*
+	if ( nbytes != BufLen )
 	{
 		printf("source file read error\n");
 		free(Buf);
 		fclose(fp);
 		return -1;
 	}
-
+*/
 	fclose(fp);
 
 	for(i = 0;i < (14 * 1024) - 4;i++)
@@ -77,8 +81,8 @@ int main (int argc, char *argv[])
 		return -1;
 	}
 
-	a    = Buf;
-	nbytes    = fwrite( a, 1, BufLen, fp);
+	a	= Buf;
+	nbytes	= fwrite( a, 1, BufLen, fp);
 
 	if ( nbytes != BufLen )
 	{

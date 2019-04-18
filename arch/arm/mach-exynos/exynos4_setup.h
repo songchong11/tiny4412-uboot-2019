@@ -508,7 +508,7 @@ struct mem_timings {
 #define ADD_LAT_PALL		(1 << 6)
 #define MEM_TYPE_DDR3		(0x6 << 8)
 #define MEM_WIDTH_32		(0x2 << 12)
-#define NUM_CHIP_2		(1 << 16)
+#define NUM_CHIP_2		(0 << 16)
 #define BL_8			(0x3 << 20)
 #define MEMCONTROL_VAL		(CLK_STOP_DISABLE | DPWRDN_DISABLE\
 				| DPWRDN_TYPE | TP_DISABLE | DSREF_DIABLE\
@@ -517,16 +517,16 @@ struct mem_timings {
 
 
 #define CHIP_BANK_8		(0x3 << 0)
-#define CHIP_ROW_14		(0x2 << 4)
+#define CHIP_ROW_14		(0x3 << 4)
 #define CHIP_COL_10		(0x3 << 8)
 #define CHIP_MAP_INTERLEAVED	(1 << 12)
-#define CHIP_MASK		(0xe0 << 16)
+#define CHIP_MASK		(0xC0 << 16)
 #ifdef CONFIG_MIU_LINEAR
 #define CHIP0_BASE		(0x40 << 24)
 #define CHIP1_BASE		(0x60 << 24)
 #else
-#define CHIP0_BASE		(0x20 << 24)
-#define CHIP1_BASE		(0x40 << 24)
+#define CHIP0_BASE		(0x40 << 24)
+#define CHIP1_BASE		(0x80 << 24)
 #endif
 #define MEMCONFIG0_VAL		(CHIP_BANK_8 | CHIP_ROW_14 | CHIP_COL_10\
 				| CHIP_MAP_INTERLEAVED | CHIP_MASK | CHIP0_BASE)
