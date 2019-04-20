@@ -42,7 +42,7 @@
 
 /* Console configuration */
 
-#define CONFIG_DEFAULT_CONSOLE        "console=ttySAC1,115200n8\0"
+#define CONFIG_DEFAULT_CONSOLE        "console=ttySAC0,115200n8\0"
 
 #define CONFIG_SYS_MEM_TOP_HIDE    (1 << 20)    /* ram console */
 
@@ -61,9 +61,11 @@
 #define CONFIG_EXTRA_ENV_SETTINGS \
     "loadaddr=0x40007000\0" \
     "rdaddr=0x48000000\0" \
+    "dtaddr=0x42000000\0" \
     "kerneladdr=0x40007000\0" \
     "ramdiskaddr=0x48000000\0" \
-    "console=ttySAC2,115200n8\0" \
+    "dtbaddr=0x42000000\0" \
+    "console=ttySAC0,115200n8\0" \
     "mmcdev=0\0" \
     "bootenv=uEnv.txt\0" \
     "loadbootenv=load mmc ${mmcdev} ${loadaddr} ${bootenv}\0" \
@@ -87,7 +89,9 @@
             "run bootscript; " \
         "fi; " \
     "fi;" \
-    "load mmc ${mmcdev} ${loadaddr} uImage; bootm ${loadaddr} "
+    "load mmc ${mmcdev} ${loadaddr} uImage;" \
+    "load mmc ${mmcdev} ${rdaddr} ramdisk.img;"\
+    "load mmc ${mmcdev} ${dtaddr} exynos4412-tiny4412.dtb; bootm ${loadaddr} "
 
 #define CONFIG_IDENT_STRING        " for TINY4412"
 
